@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A4チラシ一発生成 引継ぎ資料｜エステティック通信</title>
+<meta name="robots" content="noindex,nofollow">
+<style>
+:root {
+  --pink:#D64E82; --pink-d:#B83969; --blue:#DCEEFB; --blue-d:#4C86B5;
+  --black:#1c1c1c; --gray:#6b6b6b; --gray-l:#e6e6e6; --gray-xl:#f6f6f6; --white:#fff;
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body { font-family:'Noto Sans JP','Hiragino Kaku Gothic ProN','Yu Gothic',Meiryo,sans-serif; color:var(--black); background:var(--white);
+  line-height:1.85; font-size:15px; word-break:auto-phrase; line-break:strict; }
+p, li, td { text-wrap:pretty; }
+h1,h2,h3 { text-wrap:balance; line-height:1.45; }
+a { color:var(--pink-d); }
+.wrap { max-width:1040px; margin:0 auto; padding:0 24px 80px; }
+header.hero { padding:48px 24px 36px; border-bottom:1px solid var(--gray-l); }
+.hero-in { max-width:1040px; margin:0 auto; }
+.eyebrow { color:var(--pink); font-weight:700; font-size:12px; letter-spacing:.14em; }
+header h1 { font-size:clamp(24px,4vw,36px); margin:8px 0 12px; }
+header h1 em { color:var(--pink); font-style:normal; }
+.lead { color:var(--gray); max-width:720px; }
+.meta { display:flex; gap:8px; flex-wrap:wrap; margin-top:18px; }
+.chip { background:var(--blue); color:var(--black); font-size:12px; font-weight:700; padding:4px 12px; border-radius:99px; white-space:nowrap; }
+nav.toc { position:sticky; top:0; z-index:10; background:rgba(255,255,255,.96); border-bottom:1px solid var(--gray-l); }
+nav.toc ul { max-width:1040px; margin:0 auto; padding:10px 24px; list-style:none; display:flex; gap:6px 16px; flex-wrap:wrap; font-size:13px; }
+nav.toc a { text-decoration:none; color:var(--black); font-weight:700; }
+nav.toc a:hover { color:var(--pink); }
+section { padding:48px 0 8px; }
+.sec-label { color:var(--pink); font-size:11px; font-weight:700; letter-spacing:.16em; }
+h2 { font-size:clamp(20px,3vw,26px); margin:4px 0 16px; padding-bottom:10px; border-bottom:2px solid var(--pink); }
+h3 { font-size:17px; margin:28px 0 8px; }
+p { margin-bottom:12px; }
+ul, ol { margin:0 0 14px 1.4em; }
+li { margin-bottom:4px; }
+table { width:100%; border-collapse:collapse; margin:10px 0 18px; font-size:14px; }
+th, td { border:1px solid var(--gray-l); padding:8px 10px; text-align:left; vertical-align:top; }
+th { background:var(--gray-xl); white-space:nowrap; }
+.note { background:var(--blue); border-radius:10px; padding:14px 18px; margin:14px 0 18px; font-size:14px; }
+.warn { background:#fff; border:2px solid var(--pink); border-radius:10px; padding:14px 18px; margin:14px 0 18px; font-size:14px; }
+.warn b { color:var(--pink-d); }
+.flow { display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:10px; margin:14px 0 20px; }
+.step { border:1px solid var(--gray-l); border-radius:12px; padding:14px; background:var(--white); }
+.step .n { display:inline-block; background:var(--pink); color:#fff; font-weight:700; width:26px; height:26px; line-height:26px; text-align:center; border-radius:50%; margin-bottom:6px; }
+.step b { display:block; margin-bottom:2px; }
+.step span { color:var(--gray); font-size:13px; }
+.prompt { border:1px solid var(--gray-l); border-radius:12px; overflow:hidden; margin:10px 0 22px; }
+.prompt-bar { display:flex; justify-content:space-between; align-items:center; background:var(--black); color:#fff; padding:8px 14px; font-size:13px; }
+.copy { background:var(--pink); color:#fff; border:0; border-radius:6px; padding:6px 14px; font-weight:700; cursor:pointer; font-family:inherit; }
+.copy.done { background:#2c7a4b; }
+pre { white-space:pre-wrap; word-break:break-word; font-family:'Noto Sans JP','Yu Gothic',Meiryo,monospace; font-size:13px; line-height:1.75; padding:16px; background:var(--gray-xl); max-height:460px; overflow:auto; }
+.fix { border-left:4px solid var(--pink); background:var(--gray-xl); padding:10px 14px; margin:8px 0 14px; border-radius:0 8px 8px 0; font-size:14px; }
+.fix pre { background:transparent; padding:0; max-height:none; }
+.logo-box { display:flex; align-items:center; gap:16px; flex-wrap:wrap; border:1px solid var(--gray-l); border-radius:12px; padding:14px; margin:10px 0; }
+.logo-box img { width:220px; height:auto; object-fit:contain; background:#fff; }
+.btn { display:inline-block; background:var(--pink); color:#fff; padding:8px 16px; border-radius:8px; text-decoration:none; font-weight:700; font-size:14px; }
+.color-row { display:flex; gap:10px; flex-wrap:wrap; margin:10px 0 18px; }
+.sw { width:120px; border:1px solid var(--gray-l); border-radius:10px; overflow:hidden; font-size:12px; }
+.sw i { display:block; height:44px; }
+.sw span { display:block; padding:6px 8px; }
+.check li { list-style:none; }
+.check li::before { content:"□ "; color:var(--pink); font-weight:700; }
+.check { margin-left:0; }
+footer { border-top:1px solid var(--gray-l); padding:24px; text-align:center; color:var(--gray); font-size:12px; }
+@media (max-width:640px) { th { white-space:normal; } .wrap { padding:0 16px 60px; } }
+</style>
+</head>
+<body>
+
+<header class="hero"><div class="hero-in">
+  <div class="eyebrow">HANDOVER MANUAL ／ 2026.10.14</div>
+  <h1>A4チラシ<em>一発生成</em> 引継ぎ資料</h1>
+  <p class="lead">ChatGPTの画像生成だけで、エステティック通信の展示会向けA4チラシ（表・裏）を作るための手順書です。プロンプト本文、添付物、修正方法、確認項目をまとめています。</p>
+  <div class="meta">
+    <span class="chip">対象：ビューティーワールド大阪（2026/10/19〜21・インテックス大阪）</span>
+    <span class="chip">成果物：A4縦・表面／裏面</span>
+    <span class="chip">元担当：新東通信 エステティック通信チーム</span>
+  </div>
+</div></header>
+
+<nav class="toc"><ul>
+  <li><a href="#s1">1. 概要</a></li><li><a href="#s2">2. 作業の流れ</a></li><li><a href="#s3">3. 添付物</a></li>
+  <li><a href="#s4">4. 固定情報</a></li><li><a href="#s5">5. プロンプト</a></li><li><a href="#s6">6. 修正方法</a></li>
+  <li><a href="#s7">7. 確認項目</a></li><li><a href="#s8">8. トラブル対応</a></li><li><a href="#s9">9. 印刷入稿</a></li><li><a href="#s10">10. 連絡先</a></li>
+</ul></nav>
+
+<div class="wrap">
+
+<section id="s1">
+  <div class="sec-label">01 OVERVIEW</div>
+  <h2>このチラシの目的と構成</h2>
+  <p><b>目的</b>：出展メーカー（取引なし・休眠・既存）に向けて、エステティック通信を「雑誌だけの会社」ではなく「展示会の前・中・後まで一緒に考えるエステ特化の販促パートナー」として認知してもらう。</p>
+  <table>
+    <tr><th>面</th><th>メッセージ</th><th>主な要素</th></tr>
+    <tr><td>表面</td><td>「エス通、雑誌だけじゃありません。」</td><td>実績の数字帯／前・中・後の3カード／WEBリニューアル記念キャンペーン（全幅の帯・3プラン）</td></tr>
+    <tr><td>裏面</td><td>「こんなご相談、エス通にできます。」</td><td>8つのメニューカード（写真・説明・タグ）／連絡先／エス通WEBのQR</td></tr>
+  </table>
+  <p><b>表面は2パターン</b>：A＝人物あり（サロンオーナーとメーカー担当の会話場面）／B＝人物なし（ブース・商品・ツールの静物）。配布先や好みに応じて選択します。</p>
+  <p><b>裏面は人物なし</b>：各サービスの内容が伝わる静物・空間写真で構成します。</p>
+  <h3>デザインの前提（変えない）</h3>
+  <p>白い背景を基調に、エス通ブランドのピンクを強調として使います。使ってよい色は下記のみです。</p>
+  <div class="color-row">
+    <div class="sw"><i style="background:#fff;border-bottom:1px solid #e6e6e6"></i><span>白（背景）</span></div>
+    <div class="sw"><i style="background:#D64E82"></i><span>ピンク #D64E82</span></div>
+    <div class="sw"><i style="background:#DCEEFB"></i><span>淡い水色</span></div>
+    <div class="sw"><i style="background:#1c1c1c"></i><span>黒</span></div>
+    <div class="sw"><i style="background:#8a8a8a"></i><span>グレー</span></div>
+  </div>
+</section>
+
+<section id="s2">
+  <div class="sec-label">02 WORKFLOW</div>
+  <h2>作業の流れ</h2>
+  <div class="flow">
+    <div class="step"><span class="n">1</span><b>添付物を用意</b><span>ロゴ画像・QR画像を手元に</span></div>
+    <div class="step"><span class="n">2</span><b>表面を生成</b><span>AまたはBを選んで別チャットで</span></div>
+    <div class="step"><span class="n">3</span><b>裏面を生成</b><span>ロゴとQRを添付して別チャットで</span></div>
+    <div class="step"><span class="n">4</span><b>確認・部分修正</b><span>文字・価格・QR・色をチェック</span></div>
+    <div class="step"><span class="n">5</span><b>高解像度化</b><span>A4・300dpi相当に仕上げる</span></div>
+  </div>
+  <div class="note"><b>ルール</b>：表面A・表面B・裏面は、<b>それぞれ別のチャット</b>で生成します（同じチャットで続けると、前の内容が混ざって崩れやすくなります）。</div>
+</section>
+
+<section id="s3">
+  <div class="sec-label">03 ATTACHMENTS</div>
+  <h2>添付物（プロンプトと一緒にアップロードするもの）</h2>
+  <table>
+    <tr><th>順番</th><th>添付物</th><th>使う面</th><th>入手方法</th></tr>
+    <tr><td>1枚目</td><td>エス通ロゴ画像</td><td>表面・裏面</td><td>下のボタンからダウンロード</td></tr>
+    <tr><td>2枚目</td><td>エス通WEBのQRコード画像</td><td>裏面のみ</td><td>引継ぎ元からの提供、またはエス通WEB（https://www.esthe.news/）のURLからQRを作成</td></tr>
+  </table>
+  <div class="logo-box">
+    <img src="assets/logo_esutsu_pink.png" alt="エス通ロゴ（ピンク）">
+    <div>
+      <p><b>エス通ロゴ（ピンク・透過PNG）</b><br>プロンプトで「そのまま配置・改変しない」と指定しています。縦横比を変えない・色を変えない。</p>
+      <a class="btn" href="assets/logo_esutsu_pink.png" download>ロゴ画像をダウンロード</a>
+    </div>
+  </div>
+  <div class="warn"><b>QRコードの注意</b>：画像生成AIはQRを「それらしく描き直す」ことがあり、スキャンできなくなる場合があります。<b>生成後は必ずスマホで読み取り確認</b>をしてください。読めない場合は、正しいQR画像を台座の位置に重ねて差し替えます（7章・8章参照）。</div>
+</section>
+
+<section id="s4">
+  <div class="sec-label">04 FIXED INFORMATION</div>
+  <h2>固定情報（チラシ記載内容の正）</h2>
+  <h3>実績の数字（表面の数字帯）</h3>
+  <table>
+    <tr><th>表記</th><th>説明</th></tr>
+    <tr><td>2004年</td><td>創刊</td></tr>
+    <tr><td>20,000部</td><td>毎月発行</td></tr>
+    <tr><td>90%</td><td>読者の決裁権者</td></tr>
+    <tr><td>93%</td><td>広告信頼度</td></tr>
+    <tr><td>1,000社超</td><td>取引実績</td></tr>
+  </table>
+  <h3>WEBリニューアル記念キャンペーン（表面の帯）</h3>
+  <table>
+    <tr><th>プラン</th><th>価格（税別）</th><th>内容</th></tr>
+    <tr><td>ENTRY</td><td>¥150,000（通常¥250,000）</td><td>口コミ型 or 検索KW型の記事を1本制作</td></tr>
+    <tr><td>STANDARD（おすすめ）</td><td>¥300,000</td><td>メイン記事＋誘導記事2本／純広告1P または Meta広告5万円分付き</td></tr>
+    <tr><td>PREMIUM</td><td>¥1,200,000〜</td><td>年間12本以上・カテゴリ制覇／純広告2P分＋Meta広告10万円分付き</td></tr>
+  </table>
+  <div class="note"><b>キャンペーン期間</b>：11月まで（表面の帯の最下部に「※キャンペーン期間：11月まで。価格はすべて税別。」と記載）。<br><b>記載しない情報</b>：STANDARDの通常価格は、チラシに記載しません（プロンプトにも入れません）。</div>
+  <h3>連絡先（裏面の黒い帯）</h3>
+  <table>
+    <tr><th>項目</th><th>記載</th></tr>
+    <tr><td>会社・部署</td><td>株式会社新東通信　エステティック通信チーム</td></tr>
+    <tr><td>Mail</td><td>esutsu.info@shinto-tsushin.co.jp</td></tr>
+    <tr><td>直通TEL</td><td>03-4500-3480</td></tr>
+  </table>
+  <p>メールアドレス・電話番号は<b>一字一句</b>の確認が必要です（ここが崩れると問い合わせ不能になります）。</p>
+</section>
+
+<section id="s5">
+  <div class="sec-label">05 PROMPTS</div>
+  <h2>プロンプト本文（そのままコピーして貼る）</h2>
+  <p>各プロンプトの先頭にあるサイズ指定（A4縦・300dpi相当・最大解像度）と、「一字一句」「禁止」の指定は変更しないでください。</p>
+
+  <h3>5-1 表面A｜人物あり版</h3>
+  <p>添付：ロゴ（1枚目）。年配男性に偏らないよう男女・年代を混ぜ、主役は商品とブースにしています。</p>
+  <div class="prompt"><div class="prompt-bar"><span>プロンプト本文</span><button class="copy" data-target="pA">コピー</button></div><pre id="pA">A4縦サイズ（210×297mm、縦横比 1：1.414）の、印刷用の高解像度（300dpi相当・できるだけ最大解像度）のチラシ「表面」を、1枚の完成したデザイン画像として作成してください。余白は上下左右10mm程度。文字は読みやすく、以下の指定どおり「一字一句」正確に入れてください。誤字・欠け・変形・勝手な追加文字は禁止です。
+
+【デザイン方針】
+白を基調にした、清潔感のあるモダンな日本の広告チラシ。色は「白（背景）・エス通ブランドのピンク #D64E82（見出しや帯などの強調のみ）・淡い水色・黒・グレー」だけを使う。それ以外の色は使わない。写真が主役で、日本の美容業界らしい上品さと信頼感。ゴシック体（太めの見出し、細めの本文）で統一。角丸のカードを使う。
+
+【レイアウト（上から順に）】
+1. 左上：添付の1枚目のロゴ画像をそのまま配置（改変しない）。その下に小さなグレーの文字で「ビューティーワールド大阪 ご出展のみなさまへ」。
+2. 左半分（ヘッドライン、大きく太く）：
+   1行目「エス通、」（黒）
+   2行目「雑誌だけじゃ」（黒）
+   3行目「ありません。」（ピンク #D64E82）
+   その下に中サイズの黒い太字で3行：
+   「展示会の前・中・後まで、」
+   「エステ特化で」
+   「一緒に考えます。」
+   さらに下に小さなグレーの文字で2行：
+   「ご活用中の方も、はじめての方も。」
+   「担当営業まで、お気軽にどうぞ。」
+3. 右半分：大きな角丸の写真（縦長気味）。内容は、日本の大型展示会場にある、白と淡い水色の美容ブランドのブース。手前の陳列台に白い化粧品ボトルが整然と並び、30代の日本人女性（エステサロンのオーナー）がボトルを手に取って見ており、その横で30代の日本人男性（メーカーの営業担当）が穏やかに説明している。背景に来場者が小さくぼけて見える。人物は画面の3分の1程度に抑え、ブースと商品を主役にする。写真の右下に、ピンクの角丸の面を少しずらして重ねる。
+4. 中段：淡い水色の横長の角丸の帯の中に、5つの数字を均等に並べる（数字はピンクの太字、下にグレーの小さな説明）：
+   「2004年／創刊」「20,000部／毎月発行」「90%／読者の決裁権者」「93%／広告信頼度」「1,000社超／取引実績」
+5. その下：小さなピンクの英字「WHAT WE DO」、続けて黒い太字で「展示会の「前・中・後」を、ひとつの窓口で。」
+6. その下：横並びの3つのカード。各カードは、上に角丸の写真、下にピンクの角丸チップ（白文字の漢字1字）＋太字の見出し、その下に黒い太字の1行、グレーの小さな2行：
+   カード1：写真＝明るいオフィスの白い会議テーブルで、20代の日本人男性1名と30代の日本人女性2名が、ノートパソコンとスマートフォン、手帳を囲んで販促の計画を話し合っている。
+     チップ「前」見出し「集める」／太字「来場前に、サロン経営者へ。」／グレー「Instagram・Meta広告」「LINE配信」
+   カード2：写真＝展示ブースの陳列棚の前で、日本人女性2名（サロンオーナー）が化粧品を手に取って見ている。ブースの内側から、30代の日本人男性（メーカーの担当者）が笑顔で応対している。
+     チップ「中」見出し「目立つ」／太字「ブースで、足を止めてもらう。」／グレー「展示会装飾・ブース企画」「キャスティング」
+   カード3：写真＝展示ブースの商談スペースで、40代の日本人女性（サロンオーナー）と30代の日本人男性（メーカーの営業担当）が、パンフレットを見ながら商談している。テーブルに無地の名刺。
+     チップ「後」見出し「つなげる」／太字「名刺を、商談に変える。」／グレー「LINE育成・イベント」「LP・WEB・AI検索対応」
+7. その下：グレーの小さな1行「新東通信の展示会・広告・PR機能 × VAZのキャスティング × エステ特化20年の知見」。
+8. 最下部（全幅のピンク #D64E82 の帯、高さ約55mm）：
+   左上に白い小さな英字「WEB RENEWAL CAMPAIGN」、その下に白い太字「WEBリニューアル記念キャンペーン」。
+   右上に白い太字「「載る」記事から、「見つかる」記事へ。」、その下に白い小さな2行「無料キーワード診断つき。」「貴社商品の検索需要を、その場でご提案します。」
+   帯の下半分に、白い角丸のカードを3つ横並び：
+   カード1：ピンクの小さな字「ENTRY」＋グレー「まず1記事から」／黒い太字「¥150,000」／グレー「（税別）通常¥250,000」／黒い小さな字「口コミ型 or 検索KW型の」「記事を1本制作」
+   カード2（右上に黒い角丸のタグ「★おすすめ」）：ピンク「STANDARD」／黒い太字「¥300,000」／グレー「（税別）」／黒い小さな字「メイン記事＋誘導記事2本」「純広告1P または Meta広告5万円分付き」
+   カード3：ピンク「PREMIUM」＋グレー「年間12本以上」／黒い太字「¥1,200,000〜」／グレー「（税別）」／黒い小さな字「カテゴリ制覇」「純広告2P分＋Meta広告10万円分付き」
+   帯の最下部（3つのカードの下）に、白い小さな文字で1行「※キャンペーン期間：11月まで。価格はすべて税別。」
+
+【写真の共通ルール】
+日本人。人物は男女・年代（20〜50代）をバランスよく混ぜ、特定の年配男性が中心にならないようにする。モデルのような作り込みすぎた容姿ではなく、サロンオーナー・メーカー社員として自然で信頼できる容姿。実際のカメラで撮ったようなリアルな質感。写真内に文字・ロゴ・看板は入れない。
+
+【禁止】
+上記以外の文字・ロゴ・QRコード・透かし・装飾文字を入れない。文字は誤字なく正確に。</pre></div>
+
+  <h3>5-2 表面B｜人物なし版</h3>
+  <p>添付：ロゴ（1枚目）。文字・レイアウトは表面Aと同じ。写真4枚だけが人物なしの静物・空間写真です。</p>
+  <div class="prompt"><div class="prompt-bar"><span>プロンプト本文</span><button class="copy" data-target="pB">コピー</button></div><pre id="pB">A4縦サイズ（210×297mm、縦横比 1：1.414）の、印刷用の高解像度（300dpi相当・できるだけ最大解像度）のチラシ「表面」を、1枚の完成したデザイン画像として作成してください。余白は上下左右10mm程度。文字は読みやすく、以下の指定どおり「一字一句」正確に入れてください。誤字・欠け・変形・勝手な追加文字は禁止です。
+
+【デザイン方針】
+白を基調にした、清潔感のあるモダンな日本の広告チラシ。色は「白（背景）・エス通ブランドのピンク #D64E82（見出しや帯などの強調のみ）・淡い水色・黒・グレー」だけを使う。それ以外の色は使わない。写真が主役で、日本の美容業界らしい上品さと信頼感。ゴシック体（太めの見出し、細めの本文）で統一。角丸のカードを使う。
+
+【レイアウト（上から順に）】
+1. 左上：添付の1枚目のロゴ画像をそのまま配置（改変しない）。その下に小さなグレーの文字で「ビューティーワールド大阪 ご出展のみなさまへ」。
+2. 左半分（ヘッドライン、大きく太く）：
+   1行目「エス通、」（黒）
+   2行目「雑誌だけじゃ」（黒）
+   3行目「ありません。」（ピンク #D64E82）
+   その下に中サイズの黒い太字で3行：
+   「展示会の前・中・後まで、」
+   「エステ特化で」
+   「一緒に考えます。」
+   さらに下に小さなグレーの文字で2行：
+   「ご活用中の方も、はじめての方も。」
+   「担当営業まで、お気軽にどうぞ。」
+3. 右半分：大きな角丸の写真（縦長気味）。内容は、日本の大型展示会場にある、人のいない白と淡い水色の美容ブランドのブース。曲線を描く白い壁、ピンクのアクセントが入った陳列棚、白い化粧品ボトルが整然と並び、小さなピンクの花が飾られている。柔らかなLED照明と奥行きのある構図で、「人が足を止めたくなる」上質な空間。人物は入れない。写真の右下に、ピンクの角丸の面を少しずらして重ねる。
+4. 中段：淡い水色の横長の角丸の帯の中に、5つの数字を均等に並べる（数字はピンクの太字、下にグレーの小さな説明）：
+   「2004年／創刊」「20,000部／毎月発行」「90%／読者の決裁権者」「93%／広告信頼度」「1,000社超／取引実績」
+5. その下：小さなピンクの英字「WHAT WE DO」、続けて黒い太字で「展示会の「前・中・後」を、ひとつの窓口で。」
+6. その下：横並びの3つのカード。各カードは、上に角丸の写真、下にピンクの角丸チップ（白文字の漢字1字）＋太字の見出し、その下に黒い太字の1行、グレーの小さな2行：
+   カード1：写真＝白い机の上を斜め上から見た構図。スマートフォン（画面は読めない美容写真のSNSフィード）、ノートパソコン（画面は数字のない淡い水色とピンクの抽象的なグラフ）、手帳、小さなピンクの花。人物は入れない。
+     チップ「前」見出し「集める」／太字「来場前に、サロン経営者へ。」／グレー「Instagram・Meta広告」「LINE配信」
+   カード2：写真＝展示ブースの陳列棚のクローズアップ。ピンクのアクセント照明の棚に、白い化粧品ボトルとジャーが美しく並ぶ。手前に小さな花。人物は入れない。
+     チップ「中」見出し「目立つ」／太字「ブースで、足を止めてもらう。」／グレー「展示会装飾・ブース企画」「キャスティング」
+   カード3：写真＝展示ブースの商談スペースの白い丸テーブル。無地のパンフレット、無地の名刺、ペン、コーヒーカップ、ノートパソコンが置かれている。人物は入れない。
+     チップ「後」見出し「つなげる」／太字「名刺を、商談に変える。」／グレー「LINE育成・イベント」「LP・WEB・AI検索対応」
+7. その下：グレーの小さな1行「新東通信の展示会・広告・PR機能 × VAZのキャスティング × エステ特化20年の知見」。
+8. 最下部（全幅のピンク #D64E82 の帯、高さ約55mm）：
+   左上に白い小さな英字「WEB RENEWAL CAMPAIGN」、その下に白い太字「WEBリニューアル記念キャンペーン」。
+   右上に白い太字「「載る」記事から、「見つかる」記事へ。」、その下に白い小さな2行「無料キーワード診断つき。」「貴社商品の検索需要を、その場でご提案します。」
+   帯の下半分に、白い角丸のカードを3つ横並び：
+   カード1：ピンクの小さな字「ENTRY」＋グレー「まず1記事から」／黒い太字「¥150,000」／グレー「（税別）通常¥250,000」／黒い小さな字「口コミ型 or 検索KW型の」「記事を1本制作」
+   カード2（右上に黒い角丸のタグ「★おすすめ」）：ピンク「STANDARD」／黒い太字「¥300,000」／グレー「（税別）」／黒い小さな字「メイン記事＋誘導記事2本」「純広告1P または Meta広告5万円分付き」
+   カード3：ピンク「PREMIUM」＋グレー「年間12本以上」／黒い太字「¥1,200,000〜」／グレー「（税別）」／黒い小さな字「カテゴリ制覇」「純広告2P分＋Meta広告10万円分付き」
+   帯の最下部（3つのカードの下）に、白い小さな文字で1行「※キャンペーン期間：11月まで。価格はすべて税別。」
+
+【写真の共通ルール】
+実際のカメラで撮ったようなリアルな質感。白〜淡い水色のシンプルな背景。人物は一切入れない。写真内に文字・ロゴ・看板は入れない。
+
+【禁止】
+上記以外の文字・ロゴ・QRコード・透かし・装飾文字を入れない。文字は誤字なく正確に。</pre></div>
+
+  <h3>5-3 裏面｜人物なし・QR添付前提</h3>
+  <p>添付：ロゴ（1枚目）＋QR（2枚目）。右下の黒い帯にQRを配置します。</p>
+  <div class="prompt"><div class="prompt-bar"><span>プロンプト本文</span><button class="copy" data-target="pC">コピー</button></div><pre id="pC">A4縦サイズ（210×297mm、縦横比 1：1.414）の、印刷用の高解像度（300dpi相当・できるだけ最大解像度）のチラシ「裏面」を、1枚の完成したデザイン画像として作成してください。余白は上下左右10mm程度。文字は読みやすく、以下の指定どおり「一字一句」正確に入れてください。誤字・欠け・変形・勝手な追加文字は禁止です。
+
+【デザイン方針】
+白を基調にした、清潔感のあるモダンな日本の広告チラシ。色は「白（背景）・エス通ブランドのピンク #D64E82（見出しの一部と細い線などの強調のみ）・淡い水色・黒・グレー」だけを使う。それ以外の色は使わない。写真が主役。ゴシック体（太めの見出し、細めの本文）で統一。角丸のカードを使う。
+
+【レイアウト（上から順に）】
+1. 左上：添付の1枚目のロゴ画像をそのまま配置（改変しない）。
+2. その下に、大きな太字の1行見出し（改行しない）：「こんなご相談、エス通にできます。」（「エス通」だけピンク #D64E82、他は黒）。その下に小さなグレーの1行：「展示会の前・中・後に使える、8つのメニュー。ひとつだけのご相談も歓迎です。」
+3. 中段：2列×4行の、白い角丸のカード8枚（薄いグレーの細い枠線）。各カードの左に正方形に近い角丸の写真、右に「黒い太字の見出し」「グレーの小さな2行の説明」「淡い水色の角丸タグ（黒い小さな字）」。写真は、そのサービスの内容が一目で伝わる、人物のいない静物・空間のイメージ写真。内容は以下。
+   (1) 写真＝美容ブランドのブースの白い縮小模型（スケールモデル）と、広げられた図面（読めない線のみ）、カラースウォッチ。白い机の上。
+       見出し「展示会装飾・ブース企画」／説明「足が止まる、」「サロン経営者に響くブースへ。」／タグ「新東通信」
+   (2) 写真＝白い撮影スタジオのセット。リングライトとスマートフォンを載せた三脚、白い化粧品ボトル、小さなピンクの花。淡い水色の背景布。
+       見出し「キャスティング・」「インフルエンサー」（2行）／説明「美容に強い発信者を、」「ブースやSNSに起用。」／タグ「VAZ」
+   (3) 写真＝大きく写したスマートフォンの画面に、美容写真が並ぶ正方形のSNS投稿フィード風の抽象的な画面（文字・ロゴなし）。背景にぼけたノートパソコンの淡い水色のグラフ。
+       見出し「Instagram・」「Meta広告運用」（2行）／説明「サロン経営者に絞って配信。」「来場前の送客に。」／タグ「運用実績あり」
+   (4) 写真＝椅子がきれいに並んだ、人のいない明るいセミナー会場。前方に小さなステージと白いスクリーン、淡い水色の照明、ピンクの花。
+       見出し「イベント・セミナー企画」／説明「ステージからVIPパーティーまで。」「集客と運営をまとめて。」／タグ「イベント実績」
+   (5) 写真＝スマートフォンのクローズアップ。画面に読めない抽象的なチャットの吹き出しとピンクの通知バッジ。背景は白い机と小さなピンクの花。
+       見出し「LINE配信・会員育成」／説明「展示会後のフォローを、」「LINEで仕組み化。」／タグ「LINE運用実績」
+   (6) 写真＝白いデスクを斜め上から。ノートパソコンの画面にWebページのデザイン案（文字のないグレーのブロックと写真のみ）、印刷されたA4チラシのデザイン案、カラースウォッチ、ペン。
+       見出し「LP・WEB・チラシ制作」／説明「伝わる受け皿を、」「企画からデザインまで。」／タグ「制作」
+   (7) 写真＝ノートパソコンの画面に、AIアシスタント風の抽象的な画面（淡い水色の柔らかく光る図形が並び、1つだけピンクの枠で強調されたカード。文字・ロゴなし）。白い机、淡い水色の光。
+       見出し「AI検索対応（LLMO）」／説明「AIの回答に、」「選ばれる情報設計を。」／タグ「AEO/LLMO」
+   (8) 写真＝白いテーブルの上に、ピンクのリボンが付いた透明なガラスのトロフィー、無地の賞状、白い花。背景は明るいステージ風でぼけている。
+       見出し「アワード・PR」／説明「受賞を、1年間の販促素材に。」「PR配信も連動。」／タグ「アワード／PR」
+4. 最下部（全幅の黒い帯、高さ約65mm）：
+   【左側（帯の幅の約65%）】左上に小さなピンクの短い横線、その下に白い太字「まずは、お気軽にご相談ください。」、白い小さな2行「ひとつだけのご相談も、展示会の前後のご相談も歓迎です。」「会期中は、会場でもお声がけください。」
+   その下に白い文字で連絡先：
+   「株式会社新東通信　エステティック通信チーム」
+   「Mail　esutsu.info@shinto-tsushin.co.jp」（「Mail」だけピンク）
+   「直通TEL　03-4500-3480」（「直通TEL」だけピンク。数字は大きめ）
+   【右下】添付の2枚目のQRコード画像を、白い角丸の正方形の台座（約30mm角）の中に、そのまま配置する。QRコードは再描画・変形・色変更・加工をしない（拡大縮小のみ）。台座の上に、白い小さな文字で「エス通WEBはこちら」。QRコードの周囲に十分な白い余白（クワイエットゾーン）を確保する。
+
+【写真の共通ルール】
+実際のカメラで撮ったようなリアルな質感。背景は白〜淡い水色でシンプルに。人物は一切入れない。写真内に文字・ロゴ・看板は入れない。
+
+【禁止】
+上記以外の文字・ロゴ・透かし・装飾文字を入れない。メールアドレスと電話番号は一字一句正確に。QRコードは添付画像以外を新たに描かない。</pre></div>
+</section>
+
+<section id="s6">
+  <div class="sec-label">06 HOW TO REVISE</div>
+  <h2>プロンプトの修正方法</h2>
+
+  <h3>6-1 内容を変えたいとき：どこを書き換えるか</h3>
+  <table>
+    <tr><th>変えたいこと</th><th>書き換える箇所</th></tr>
+    <tr><td>見出しコピー</td><td>表面【レイアウト】2 の「1行目〜3行目」と中サイズの3行</td></tr>
+    <tr><td>宛先文言（「ビューティーワールド大阪 ご出展のみなさまへ」）</td><td>表面【レイアウト】1</td></tr>
+    <tr><td>実績の数字</td><td>表面【レイアウト】4（5つの「数字／説明」）</td></tr>
+    <tr><td>価格・プラン内容・キャンペーン期間</td><td>表面【レイアウト】8 の3つのカード。期間は帯の最下部の1行「※キャンペーン期間：11月まで。価格はすべて税別。」</td></tr>
+    <tr><td>前・中・後の写真場面</td><td>表面【レイアウト】6 の「写真＝」の記述</td></tr>
+    <tr><td>メインの写真</td><td>表面【レイアウト】3</td></tr>
+    <tr><td>メニューの追加・削除・並び替え</td><td>裏面【レイアウト】3 の (1)〜(8)。枚数を変える場合は「2列×4行」「8枚」「8つのメニュー」の数字も合わせる</td></tr>
+    <tr><td>連絡先</td><td>裏面【レイアウト】4 の連絡先3行</td></tr>
+    <tr><td>QRの位置・大きさ</td><td>裏面【レイアウト】4 の【右下】の記述</td></tr>
+    <tr><td>人物の年代・性別・雰囲気</td><td>表面Aの【写真の共通ルール】</td></tr>
+    <tr><td>色の使い方</td><td>【デザイン方針】の色の指定</td></tr>
+  </table>
+  <div class="note"><b>書き換えのコツ</b>：変更したい文字は「」で囲み、「一字一句この通りに」と添えると崩れにくくなります。1回に変える箇所は1〜2か所までにします。</div>
+
+  <h3>6-2 生成後に直したいとき：部分修正プロンプト（同じチャットで送る）</h3>
+  <p>全体を作り直さず、直したい部分だけを指定して依頼します。</p>
+
+  <p><b>文字が崩れた・誤字がある</b></p>
+  <div class="fix"><pre>画像の「（崩れている箇所の位置と文字）」が崩れています。他の部分（レイアウト・写真・色・他の文字）は一切変えずに、その部分だけを「（正しい文字）」に修正してください。</pre></div>
+
+  <p><b>写真だけ差し替えたい</b></p>
+  <div class="fix"><pre>「（カードの位置。例：左上から3番目のカード）」の写真だけを、「（新しい写真の内容）」に差し替えてください。他の部分は一切変えないでください。</pre></div>
+
+  <p><b>QRを正しいものに直したい</b></p>
+  <div class="fix"><pre>右下のQRコードを、添付した2枚目のQR画像と同一のものに置き換えてください。再描画・変形・色変更はせず、拡大縮小のみ。周囲に白い余白を確保してください。他の部分は変えないでください。</pre></div>
+
+  <p><b>余白が足りず端の文字が切れている</b></p>
+  <div class="fix"><pre>上下左右に10mm程度の余白を確保し、端の文字や要素が切れないように、全体を少し縮小して再配置してください。内容と文字は変えないでください。</pre></div>
+
+  <p><b>色が指定外（黄色・緑・茶色など）になっている</b></p>
+  <div class="fix"><pre>使う色を「白・ピンク（#D64E82）・淡い水色・黒・グレー」だけにしてください。それ以外の色を使っている部分を、この5色に置き換えてください。文字と写真の内容は変えないでください。</pre></div>
+
+  <p><b>人物が特定の年代・性別に偏っている（表面A）</b></p>
+  <div class="fix"><pre>写真の人物を、男女・年代（20〜50代）がバランスよく混ざるように変更してください。年配の男性が中心にならないようにし、主役は商品とブースにしてください。それ以外は変えないでください。</pre></div>
+
+  <p><b>解像度・サイズを整えたい</b></p>
+  <div class="fix"><pre>この画像を、内容・文字を一切変えずに、できるだけ高解像度で縦横比A4（1:1.414）に仕上げてください。</pre></div>
+
+  <h3>6-3 修正の進め方</h3>
+  <ol>
+    <li>まず全体を1回生成し、<b>文字・価格・連絡先・QR</b>を最優先で確認する</li>
+    <li>崩れや誤りは部分修正で直す（2〜3回直しても改善しない場合は、新しいチャットでプロンプトの書き換え箇所を絞って再生成する）</li>
+    <li>最後に高解像度化（6-2の「解像度・サイズ」）を行う</li>
+  </ol>
+</section>
+
+<section id="s7">
+  <div class="sec-label">07 CHECKLIST</div>
+  <h2>生成後の確認項目</h2>
+  <ul class="check">
+    <li>表面の見出しが「エス通、雑誌だけじゃありません。」で1字も違わない</li>
+    <li>裏面の見出しが「こんなご相談、エス通にできます。」で1字も違わない</li>
+    <li>メール <b>esutsu.info@shinto-tsushin.co.jp</b> が正確</li>
+    <li>TEL <b>03-4500-3480</b> が正確</li>
+    <li>価格（¥150,000／¥300,000／¥1,200,000〜／通常¥250,000）と「キャンペーン期間：11月まで」が正確</li>
+    <li><b>QRをスマホで読み取り、エス通WEBが開く</b></li>
+    <li>色が「白・ピンク・水色・黒・グレー」に収まっている</li>
+    <li>裏面に人物が紛れていない／表面Bに人物が紛れていない</li>
+    <li>写真内に意味不明な文字・ロゴが入っていない</li>
+    <li>端の文字が切れていない（上下左右に余白がある）</li>
+    <li>ロゴが歪んでいない・色が変わっていない</li>
+  </ul>
+</section>
+
+<section id="s8">
+  <div class="sec-label">08 TROUBLESHOOTING</div>
+  <h2>よくある問題と対処</h2>
+  <table>
+    <tr><th>症状</th><th>対処</th></tr>
+    <tr><td>日本語の文字が崩れる・欠ける</td><td>6-2の部分修正を依頼。小さい文字が多い箇所は、プロンプト内の説明文を短くする。それでも直らない場合は、写真のみ生成し、文字は別のデザインツールで載せる方式に切り替える（9章）</td></tr>
+    <tr><td>A4の縦横比にならない</td><td>6-2の「解像度・サイズ」を依頼。または画像のアップスケール・余白調整ツールを使う</td></tr>
+    <tr><td>QRが読み取れない</td><td>6-2のQR修正を依頼。直らなければ、生成画像のQR部分に正しいQR画像を重ねて合成する</td></tr>
+    <tr><td>文章中の改行位置が不自然</td><td>改行を入れたい位置を「改行は『○○』『△△』の2行」と明示する。助詞や語の途中で切れる場合は、その箇所を部分修正で指定する</td></tr>
+    <tr><td>写真の雰囲気がバラバラ</td><td>【写真の共通ルール】を厳密に守る。1枚ずつ「リアルな質感」「淡い水色・白の背景」を追記して再生成</td></tr>
+    <tr><td>同じチャットで繰り返すと悪化する</td><td>新しいチャットで、修正済みの要件をまとめて貼り直す</td></tr>
+  </table>
+</section>
+
+<section id="s9">
+  <div class="sec-label">09 PRINT</div>
+  <h2>印刷入稿・別方式（参考）</h2>
+  <div class="warn"><b>前提</b>：本資料のプロンプトは、ChatGPTの画像生成だけで完結させる運用です。印刷会社へ入稿する場合は、下記のデータ仕様に合わせて変換してください（仕様は各印刷会社の最新の案内で必ず確認）。</div>
+  <table>
+    <tr><th>項目</th><th>目安</th></tr>
+    <tr><td>仕上がりサイズ</td><td>A4 210×297mm</td></tr>
+    <tr><td>塗り足し込みサイズ</td><td>216×303mm（上下左右3mm）</td></tr>
+    <tr><td>解像度</td><td>350dpi目安（約2,976×4,252px）。ChatGPT出力はこれに満たない場合が多く、アップスケールが必要</td></tr>
+    <tr><td>カラー</td><td>CMYK推奨。画像生成の出力はRGBのため、変換するとピンクがくすむことがある。色校正を推奨</td></tr>
+    <tr><td>文字の安全圏</td><td>仕上がり線から5mm以上内側</td></tr>
+    <tr><td>形式</td><td>PDF</td></tr>
+  </table>
+  <h3>文字を後から載せる方式（崩れが多い場合）</h3>
+  <p>写真・背景のみをChatGPTで生成し、見出し・価格・連絡先・QRは、デザインツール（Illustrator・Canva・PowerPoint等）で載せる方式です。文字の正確性とQRの確実性が高くなります。元担当では、組版スクリプトでPDFを出力していました（必要な場合は引継ぎ元へご相談ください）。</p>
+</section>
+
+<section id="s10">
+  <div class="sec-label">10 CONTACT</div>
+  <h2>引継ぎ元・問い合わせ</h2>
+  <table>
+    <tr><th>項目</th><th>内容</th></tr>
+    <tr><td>部署</td><td>株式会社新東通信　エステティック通信チーム</td></tr>
+    <tr><td>Mail</td><td>esutsu.info@shinto-tsushin.co.jp</td></tr>
+    <tr><td>直通TEL</td><td>03-4500-3480</td></tr>
+  </table>
+  <div class="note"><b>引継ぎ時の注意</b>：本資料のプロンプトおよびロゴは、エステティック通信の販促物制作のためのものです。当該用途以外への転用・第三者への再配布はご遠慮ください。</div>
+</section>
+
+</div>
+
+<footer>エステティック通信　A4チラシ一発生成 引継ぎ資料　｜　2026.10.14 作成</footer>
+
+<script>
+document.querySelectorAll('.copy').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    var el = document.getElementById(btn.dataset.target);
+    var text = el.innerText;
+    var done = function() { btn.textContent = 'コピーしました'; btn.classList.add('done');
+      setTimeout(function() { btn.textContent = 'コピー'; btn.classList.remove('done'); }, 1800); };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done, function() { fallback(text, done); });
+    } else { fallback(text, done); }
+  });
+});
+function fallback(text, cb) {
+  var ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta);
+  ta.select(); try { document.execCommand('copy'); cb(); } catch (e) {} document.body.removeChild(ta);
+}
+</script>
+</body>
+</html>
